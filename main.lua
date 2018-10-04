@@ -8,16 +8,19 @@ love.graphics.setDefaultFilter("nearest")
 if arg[#arg] == "-debug" then require("mobdebug").start() end
 
 pad = {
-  x = 100,
-  y = 20,
-  posX = 0,
-  posY = 0
+  x = 0,
+  y = 0,
+  width = 100,
+  height = 20
 }
 
 ball = {
   x = 200,
   y = 200,
-  ray = 10
+  ray = 10,
+  stick = true,
+  vx = 0,
+  vy = 0
 }
 
 -- Charger une fois au démarrage
@@ -26,19 +29,43 @@ function love.load()
   largeur = love.graphics.getWidth()
   hauteur = love.graphics.getHeight()
   
-  posY = hauteur - pad.y
+  pad.y = hauteur - pad.height
   
+  Start()
 end
 
 -- Recharger 60 fois par seconde (ou autant que faire se peut)
 function love.update(dt)
-  posX = love.mouse.getX() - pad.x / 2
-  ball.x = posX + pad.x / 2
-  ball.y = posY - ball.ray
+  pad.x = love.mouse.getX() - (pad.width / 2)
+  
+  if ball.stick == true then
+    ball.x = pad.x + (pad.width / 2)
+    ball.y = pad.y - ball.ray
+  end
+  
+  ball.x = ball.x + ball.vx
+  ball.y = ball.y + ball.vy
+    
 end
 
 -- Affichage à l'écran
 function love.draw()
-  love.graphics.rectangle("fill", posX, posY, pad.x, pad.y)
+  love.graphics.rectangle("fill", pad.x, pad.y, pad.width, pad.height)
   love.graphics.circle("fill", ball.x, ball.y, ball.ray)
+  
 end
+
+function Start()
+  ball.stick = true
+  
+end
+
+function love.mousepressed(x, y, b)
+  if ball.stick == true and b == 1 then
+    ball.stick = false
+    ball.vx = 10
+    ball.vy = -10
+  end
+  
+end
+
