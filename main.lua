@@ -43,6 +43,16 @@ function love.update(dt)
     ball.y = pad.y - ball.ray
   end
   
+  if ball.x > largeur then
+    ball.vx = 0 - ball.vx
+  end
+  if ball.x < 0 then
+    ball.vx = 0 - ball.vx
+  end
+  if ball.y < 0 then
+    ball.vy = 0 - ball.vy
+  end
+  
   ball.x = ball.x + ball.vx
   ball.y = ball.y + ball.vy
     
@@ -63,8 +73,8 @@ end
 function love.mousepressed(x, y, b)
   if ball.stick == true and b == 1 then
     ball.stick = false
-    ball.vx = 10
-    ball.vy = -10
+    ball.vx = 4
+    ball.vy = -4
   end
   
 end
