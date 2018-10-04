@@ -12,7 +12,13 @@ pad = {
   y = 20,
   posX = 0,
   posY = 0
-  }
+}
+
+ball = {
+  x = 200,
+  y = 200,
+  ray = 10
+}
 
 -- Charger une fois au démarrage
 function love.load()
@@ -27,9 +33,12 @@ end
 -- Recharger 60 fois par seconde (ou autant que faire se peut)
 function love.update(dt)
   posX = love.mouse.getX() - pad.x / 2
+  ball.x = posX + pad.x / 2
+  ball.y = posY - ball.ray
 end
 
 -- Affichage à l'écran
 function love.draw()
   love.graphics.rectangle("fill", posX, posY, pad.x, pad.y)
+  love.graphics.circle("fill", ball.x, ball.y, ball.ray)
 end
