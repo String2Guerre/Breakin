@@ -73,8 +73,8 @@ end
 function love.mousepressed(x, y, b)
   if ball.stick == true and b == 1 then
     ball.stick = false
-    ball.vx = 4
-    ball.vy = -4
+    ball.vx = 7
+    ball.vy = -7
   end
   
 end
