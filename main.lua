@@ -29,30 +29,40 @@ function love.load()
   largeur = love.graphics.getWidth()
   hauteur = love.graphics.getHeight()
   
-  pad.y = hauteur - pad.height
+  pad.y = hauteur - (pad.height / 2)
   
   Start()
 end
 
 -- Recharger 60 fois par seconde (ou autant que faire se peut)
 function love.update(dt)
-  pad.x = love.mouse.getX() - (pad.width / 2)
+  pad.x = love.mouse.getX()
   
   if ball.stick == true then
-    ball.x = pad.x + (pad.width / 2)
-    ball.y = pad.y - ball.ray
+    ball.x = pad.x
+    ball.y = pad.y - pad.height / 2 - ball.ray
+  else
+    ball.x = ball.x + (ball.vx * dt)
+    ball.y = ball.y + (ball.vy * dt)
   end
   
   if ball.x > largeur then
     ball.vx = 0 - ball.vx
+    ball.x = largeur
   end
   if ball.x < 0 then
     ball.vx = 0 - ball.vx
+    ball.x = 0
   end
   if ball.y < 0 then
     ball.vy = 0 - ball.vy
+    ball.y = 0
   end
   
+  if ball.y > hauteur then-- and ball.x > pad.x - (pad.width / 2) and ball.x < pad.x + (pad.width / 2)then
+    ball.stick = true
+  end
+
   ball.x = ball.x + ball.vx
   ball.y = ball.y + ball.vy
     
@@ -60,7 +70,7 @@ end
 
 -- Affichage à l'écran
 function love.draw()
-  love.graphics.rectangle("fill", pad.x, pad.y, pad.width, pad.height)
+  love.graphics.rectangle("fill", pad.x - (pad.width / 2), pad.y - (pad.height / 2 ), pad.width, pad.height)
   love.graphics.circle("fill", ball.x, ball.y, ball.ray)
   
 end
